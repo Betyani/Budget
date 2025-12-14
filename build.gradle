@@ -19,6 +19,11 @@ java {
 dependencies {
     // JSON 저장/불러오기용 Gson
     implementation 'com.google.code.gson:gson:2.10.1'
+
+    // Lombok (컴파일 타임 전용)
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
 }
 
 // 우리가 만든 Main 클래스 경로에 맞게 바꿔줘야 함!

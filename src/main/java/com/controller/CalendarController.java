@@ -1,74 +1,109 @@
 package com.controller;
 
+import com.model.calendar.CalendarCell;
+import com.model.calendar.DayOfWeekCell;
+import com.service.calendar.CalendarService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.List;
 
 public class CalendarController {
 
     @FXML private Button prevMonthButton;
     @FXML private Button nextMonthButton;
     @FXML private Label monthLabel;
+    @FXML private GridPane dayOfWeekGrid;
     @FXML private GridPane calendarGrid;
 
+    private final CalendarService calendarService = new CalendarService();
     private YearMonth currentYearMonth;
+
+    // 선택된 날짜 셀 (선택 표시용)
+    private StackPane selectedCell;
 
     @FXML
     public void initialize() {
         currentYearMonth = YearMonth.now();
-        drawCalendar(currentYearMonth);
 
-        prevMonthButton.setOnAction(e -> {
-            currentYearMonth = currentYearMonth.minusMonths(1);
-            drawCalendar(currentYearMonth);
-        });
+        renderDayOfWeek();   // 요일 헤더
+        renderMonth();       // 달력 날짜
 
-        nextMonthButton.setOnAction(e -> {
-            currentYearMonth = currentYearMonth.plusMonths(1);
-            drawCalendar(currentYearMonth);
-        });
+        prevMonthButton.setOnAction(e -> moveMonth(-1));
+        nextMonthButton.setOnAction(e -> moveMonth(1));
     }
 
-    private void drawCalendar(YearMonth yearMonth) {
-        // 기존 그리드 내용 싹 비우기
-        calendarGrid.getChildren().clear();
+    /* ===================== 월 이동 ===================== */
 
-        // 상단에 "2025년 12월" 이런 식으로 표시
-        monthLabel.setText(yearMonth.getYear() + "년 " + yearMonth.getMonthValue() + "월");
+    private void moveMonth(int offset) {
+        currentYearMonth = currentYearMonth.plusMonths(offset);
+        renderMonth();
+    }
 
-        // 요일 헤더 (첫 번째 줄)
-        String[] days = {"일", "월", "화", "수", "목", "금", "토"};
-        for (int i = 0; i < 7; i++) {
-            Label lbl = new Label(days[i]);
-            lbl.setStyle("-fx-font-weight: bold; -fx-alignment: center;");
+    /* ===================== 요일 헤더 ===================== */
+
+    private void renderDayOfWeek() {
+        dayOfWeekGrid.getChildren().clear();
+
+        List<DayOfWeekCell> days = calendarService.generateDayOfWeek();
+        for (DayOfWeekCell d : days) {
+            Label lbl = new Label(d.getLabel());
             lbl.setMinSize(40, 20);
-            calendarGrid.add(lbl, i, 0);
+
+            dayOfWeekGrid.add(lbl, d.getCol(), d.getRow());
         }
+    }
 
-        // 이번 달 1일이 무슨 요일인지
-        LocalDate firstDay = yearMonth.atDay(1);
-        int startCol = firstDay.getDayOfWeek().getValue() % 7; // 일요일 = 0
-        int daysInMonth = yearMonth.lengthOfMonth();
+    /* ===================== 달력 렌더링 ===================== */
 
-        int col = startCol;
-        int row = 1;
+    private void renderMonth() {
+        calendarGrid.getChildren().clear();
+        monthLabel.setText(formatMonth(currentYearMonth));
 
-        for (int day = 1; day <= daysInMonth; day++) {
-            Label lbl = new Label(String.valueOf(day));
-            lbl.setMinSize(40, 40);
-            lbl.setStyle("-fx-border-color: lightgray; -fx-alignment: center;");
+        List<CalendarCell> cells =
+                calendarService.generateMonth(currentYearMonth);
 
-            calendarGrid.add(lbl, col, row);
-
-            col++;
-            if (col > 6) { // 토요일 넘어가면 줄바꿈
-                col = 0;
-                row++;
-            }
+        for (CalendarCell data : cells) {
+            StackPane cell = createDateCell(data.getDate());
+            calendarGrid.add(cell, data.getCol(), data.getRow());
         }
+    }
+
+    private StackPane createDateCell(LocalDate date) {
+        StackPane cell = new StackPane();
+
+        Label lbl = new Label(String.valueOf(date.getDayOfMonth()));
+        lbl.setMinSize(40, 40);
+
+        cell.getChildren().add(lbl);
+
+        cell.setOnMouseClicked(e -> onDateClicked(date, cell));
+
+        return cell;
+    }
+
+    /* ===================== 날짜 클릭 ===================== */
+
+    private void onDateClicked(LocalDate date, StackPane clickedCell) {
+        // 선택 상태 관리 (스타일은 CSS에서 처리)
+        if (selectedCell != null) {
+            selectedCell.getStyleClass().remove("selected-cell");
+        }
+        clickedCell.getStyleClass().add("selected-cell");
+        selectedCell = clickedCell;
+
+        System.out.println("클릭한 날짜: " + date);
+        // TODO: 수입/지출 입력 팝업 연결
+    }
+
+    /* ===================== 유틸 ===================== */
+
+    private String formatMonth(YearMonth ym) {
+        return ym.getYear() + "년 " + ym.getMonthValue() + "월";
     }
 }
