@@ -8,10 +8,9 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CalendarService {
+import static com.config.CalendarUIConfig.*;
 
-    private static final int DAYS_IN_WEEK = 7;
-    private static final int HEADER_ROW = 0;
+public class CalendarService {
 
     public List<CalendarCell> generateMonth(YearMonth yearMonth) {
         List<CalendarCell> cells = new ArrayList<>();

@@ -13,13 +13,18 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
+import static com.config.CalendarUIConfig.*;
+
 public class CalendarController {
 
-    @FXML private Button prevMonthButton;
-    @FXML private Button nextMonthButton;
-    @FXML private Label monthLabel;
-    @FXML private GridPane dayOfWeekGrid;
-    @FXML private GridPane calendarGrid;
+    @FXML
+    private Button prevMonthButton;
+    @FXML
+    private Button nextMonthButton;
+    @FXML
+    private Label monthLabel;
+    @FXML
+    private GridPane calendarGrid;
 
     private final CalendarService calendarService = new CalendarService();
     private YearMonth currentYearMonth;
@@ -30,9 +35,7 @@ public class CalendarController {
     @FXML
     public void initialize() {
         currentYearMonth = YearMonth.now();
-
-        renderDayOfWeek();   // 요일 헤더
-        renderMonth();       // 달력 날짜
+        renderMonth();       // 달력
 
         prevMonthButton.setOnAction(e -> moveMonth(-1));
         nextMonthButton.setOnAction(e -> moveMonth(1));
@@ -45,47 +48,63 @@ public class CalendarController {
         renderMonth();
     }
 
-    /* ===================== 요일 헤더 ===================== */
-
-    private void renderDayOfWeek() {
-        dayOfWeekGrid.getChildren().clear();
-
-        List<DayOfWeekCell> days = calendarService.generateDayOfWeek();
-        for (DayOfWeekCell d : days) {
-            Label lbl = new Label(d.getLabel());
-            lbl.setMinSize(40, 20);
-
-            dayOfWeekGrid.add(lbl, d.getCol(), d.getRow());
-        }
-    }
-
     /* ===================== 달력 렌더링 ===================== */
 
     private void renderMonth() {
         calendarGrid.getChildren().clear();
         monthLabel.setText(formatMonth(currentYearMonth));
 
-        List<CalendarCell> cells =
-                calendarService.generateMonth(currentYearMonth);
+        // 1) 요일 헤더 (row=0)
+        for (DayOfWeekCell d : calendarService.generateDayOfWeek()) {
+            Label lbl = new Label(d.getLabel());
+            lbl.setPrefSize(CELL_WIDTH, DAY_OF_WEEK_HEIGHT);
+            calendarGrid.add(lbl, d.getCol(), 0);
+        }
 
-        for (CalendarCell data : cells) {
-            StackPane cell = createDateCell(data.getDate());
-            calendarGrid.add(cell, data.getCol(), data.getRow());
+        // 2) 날짜 데이터 (서비스 row는 0부터 시작)
+        List<CalendarCell> monthCells = calendarService.generateMonth(currentYearMonth);
+
+        // 3) 항상 6주(42칸) 채우기
+        final int TOTAL = DAYS_IN_WEEK * MAX_ROWS;
+
+        CalendarCell[] grid = new CalendarCell[TOTAL];
+
+        for (CalendarCell c : monthCells) {
+            int index = c.getRow() * DAYS_IN_WEEK + c.getCol();
+            if (index >= 0 && index < TOTAL) {
+                grid[index] = c;
+            }
+        }
+
+        for (int index = 0; index < TOTAL; index++) {
+            int col = index % DAYS_IN_WEEK;
+            int row = index / DAYS_IN_WEEK;
+
+            CalendarCell data = grid[index];
+
+            StackPane cell = (data == null)
+                    ? createEmptyCell()
+                    : createDateCell(data.getDate());
+
+            // 날짜 영역은 row + 1 (요일이 0행이니까)
+            calendarGrid.add(cell, col, row + 1);
         }
     }
+
 
     private StackPane createDateCell(LocalDate date) {
         StackPane cell = new StackPane();
 
-        Label lbl = new Label(String.valueOf(date.getDayOfMonth()));
-        lbl.setMinSize(40, 40);
+        cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
 
+        Label lbl = new Label(String.valueOf(date.getDayOfMonth()));
         cell.getChildren().add(lbl);
 
         cell.setOnMouseClicked(e -> onDateClicked(date, cell));
 
         return cell;
     }
+
 
     /* ===================== 날짜 클릭 ===================== */
 
@@ -106,4 +125,11 @@ public class CalendarController {
     private String formatMonth(YearMonth ym) {
         return ym.getYear() + "년 " + ym.getMonthValue() + "월";
     }
+
+    private StackPane createEmptyCell() {
+        StackPane cell = new StackPane();
+        cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
+        return cell;
+    }
+
 }

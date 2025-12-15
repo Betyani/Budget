@@ -23,16 +23,33 @@
 
     <!-- 가운데: 달력 그리드 -->
     <center>
-        <VBox spacing="10" alignment="CENTER">
-        <GridPane fx:id="dayOfWeekGrid" hgap="5" vgap="5" alignment="CENTER" />
-        <GridPane fx:id="calendarGrid"
-                  hgap="5" vgap="5"
-                  alignment="CENTER">
+        <GridPane fx:id="calendarGrid" alignment="CENTER">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
+
+            <!-- 7열 고정 -->
+            <columnConstraints>
+                <ColumnConstraints prefWidth="100" minWidth="100" maxWidth="100"/>
+                <ColumnConstraints prefWidth="100" minWidth="100" maxWidth="100"/>
+                <ColumnConstraints prefWidth="100" minWidth="100" maxWidth="100"/>
+                <ColumnConstraints prefWidth="100" minWidth="100" maxWidth="100"/>
+                <ColumnConstraints prefWidth="100" minWidth="100" maxWidth="100"/>
+                <ColumnConstraints prefWidth="100" minWidth="100" maxWidth="100"/>
+                <ColumnConstraints prefWidth="100" minWidth="100" maxWidth="100"/>
+            </columnConstraints>
+
+            <!-- 7행 고정: 요일(0행) + 날짜 6행(1~6행) -->
+            <rowConstraints>
+                <RowConstraints prefHeight="30" minHeight="30" maxHeight="30"/>
+                <RowConstraints prefHeight="70" minHeight="70" maxHeight="70"/>
+                <RowConstraints prefHeight="70" minHeight="70" maxHeight="70"/>
+                <RowConstraints prefHeight="70" minHeight="70" maxHeight="70"/>
+                <RowConstraints prefHeight="70" minHeight="70" maxHeight="70"/>
+                <RowConstraints prefHeight="70" minHeight="70" maxHeight="70"/>
+                <RowConstraints prefHeight="70" minHeight="70" maxHeight="70"/>
+            </rowConstraints>
         </GridPane>
-        </VBox>
     </center>
 
 </BorderPane>
