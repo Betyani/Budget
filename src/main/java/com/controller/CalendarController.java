@@ -2,12 +2,14 @@ package com.controller;
 
 import com.model.calendar.CalendarCell;
 import com.model.calendar.DayOfWeekCell;
+import com.router.Router;
 import com.service.calendar.CalendarService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -32,10 +34,15 @@ public class CalendarController {
     // 선택된 날짜 셀 (선택 표시용)
     private StackPane selectedCell;
 
+    // ✅ Router 주입 (Router.openCalendar()에서 controller.setRouter(this)로 넣어줄 것)
+    // ✅ 화면 이동/팝업 담당 Router
+    @Setter
+    private Router router;
+
     @FXML
     public void initialize() {
         currentYearMonth = YearMonth.now();
-        renderMonth();       // 달력
+        renderMonth();
 
         prevMonthButton.setOnAction(e -> moveMonth(-1));
         nextMonthButton.setOnAction(e -> moveMonth(1));
@@ -61,12 +68,11 @@ public class CalendarController {
             calendarGrid.add(lbl, d.getCol(), 0);
         }
 
-        // 2) 날짜 데이터 (서비스 row는 0부터 시작)
+        // 2) 날짜 데이터
         List<CalendarCell> monthCells = calendarService.generateMonth(currentYearMonth);
 
         // 3) 항상 6주(42칸) 채우기
         final int TOTAL = DAYS_IN_WEEK * MAX_ROWS;
-
         CalendarCell[] grid = new CalendarCell[TOTAL];
 
         for (CalendarCell c : monthCells) {
@@ -91,25 +97,20 @@ public class CalendarController {
         }
     }
 
-
     private StackPane createDateCell(LocalDate date) {
         StackPane cell = new StackPane();
-
         cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
 
         Label lbl = new Label(String.valueOf(date.getDayOfMonth()));
         cell.getChildren().add(lbl);
 
         cell.setOnMouseClicked(e -> onDateClicked(date, cell));
-
         return cell;
     }
-
 
     /* ===================== 날짜 클릭 ===================== */
 
     private void onDateClicked(LocalDate date, StackPane clickedCell) {
-        // 선택 상태 관리 (스타일은 CSS에서 처리)
         if (selectedCell != null) {
             selectedCell.getStyleClass().remove("selected-cell");
         }
@@ -117,7 +118,13 @@ public class CalendarController {
         selectedCell = clickedCell;
 
         System.out.println("클릭한 날짜: " + date);
-        // TODO: 수입/지출 입력 팝업 연결
+
+        // ✅ Router로 위임 (owner는 현재 달력 화면의 window)
+        if (router != null) {
+            router.openEntryDialog(calendarGrid.getScene().getWindow(), date);
+        } else {
+            System.out.println("Router가 주입되지 않았습니다. (router is null)");
+        }
     }
 
     /* ===================== 유틸 ===================== */
@@ -131,5 +138,4 @@ public class CalendarController {
         cell.setPrefSize(CELL_WIDTH, CELL_HEIGHT);
         return cell;
     }
-
 }
