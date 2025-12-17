@@ -23,6 +23,15 @@ public class EntryDialogController {
     /* ===== 내부 상태 ===== */
     private LocalDate date;
 
+    // ✅ 수정모드 관련 상태
+    private boolean editMode = false;
+    private java.util.UUID editingId = null;
+
+    // ✅ Router가 결과 확인할 수 있게
+    private boolean saved = false;
+    public boolean isSaved() { return saved; }
+
+
     /* ===== 주입받을 서비스 ===== */
     @Setter
     private LedgerService ledgerService;
@@ -42,6 +51,25 @@ public class EntryDialogController {
         this.date = date;
         dateLabel.setText(date.toString());
     }
+
+    // ✅ 수정 모드 초기화 (기존 값을 화면에 채움)
+    public void initForEdit(LedgerItem item) {
+        this.editMode = true;
+        this.editingId = item.getId();
+
+        this.date = item.getDate();
+        dateLabel.setText(date.toString());
+
+        // 라디오 버튼
+        if (item.getType() == TxType.INCOME) incomeRadio.setSelected(true);
+        else expenseRadio.setSelected(true);
+
+        // 입력값 채우기
+        categoryCombo.setValue(item.getCategory());
+        amountField.setText(String.valueOf(item.getAmount()));
+        memoArea.setText(item.getMemo() == null ? "" : item.getMemo());
+    }
+
 
     @FXML
     private void onCancel() {
@@ -71,16 +99,38 @@ public class EntryDialogController {
         int amount = Integer.parseInt(amountText);
         String memo = memoArea.getText() == null ? "" : memoArea.getText();
 
-        LedgerItem item = LedgerItem.builder()
-                .date(date)
-                .type(type)
-                .category(category)
-                .amount(amount)
-                .memo(memo)
-                .build();
+        if (!editMode) {
+            // ✅ 추가
+            LedgerItem item = LedgerItem.builder()
+                    .date(date)
+                    .type(type)
+                    .category(category)
+                    .amount(amount)
+                    .memo(memo)
+                    .build();
+            ledgerService.add(item);
 
-        ledgerService.add(item);
+        } else {
+            // ✅ 수정 (id 유지!)
+            LedgerItem updated = LedgerItem.builder()
+                    .id(editingId) // 핵심
+                    .date(date)
+                    .type(type)
+                    .category(category)
+                    .amount(amount)
+                    .memo(memo)
+                    .build();
+
+            boolean ok = ledgerService.updateById(updated);
+            if (!ok) {
+                alert("수정 대상(id)을 찾지 못했습니다.");
+                return;
+            }
+        }
+
+        saved = true;
         close();
+
     }
 
     private void close() {

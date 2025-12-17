@@ -34,8 +34,8 @@ public class CalendarController {
     // 선택된 날짜 셀 (선택 표시용)
     private StackPane selectedCell;
 
-    // ✅ Router 주입 (Router.openCalendar()에서 controller.setRouter(this)로 넣어줄 것)
-    // ✅ 화면 이동/팝업 담당 Router
+    // Router 주입 (Router.openCalendar()에서 controller.setRouter(this)로 넣어줄 것)
+    // 화면 이동/팝업 담당 Router
     @Setter
     private Router router;
 

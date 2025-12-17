@@ -1,16 +1,18 @@
 [
   {
-    "date": "2025-12-11",
-    "type": "INCOME",
-    "category": "교통",
-    "amount": 12341245,
-    "memo": "safdsaf"
+    "id": "833da7d7-4594-473d-b1e2-4980b138ad8f",
+    "date": "2025-12-01",
+    "type": "EXPENSE",
+    "category": "쇼핑",
+    "amount": 5553,
+    "memo": "13433"
   },
   {
-    "date": "2025-12-03",
-    "type": "EXPENSE",
-    "category": "교통",
-    "amount": 123,
-    "memo": "133132"
+    "id": "484eb25e-2bb3-4e3e-a609-725f0a106a57",
+    "date": "2025-12-01",
+    "type": "INCOME",
+    "category": "월급",
+    "amount": 24322,
+    "memo": "2423"
   }
 ]

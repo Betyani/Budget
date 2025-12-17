@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class DetailDialogController {
 
@@ -69,8 +70,11 @@ public class DetailDialogController {
         int expense = 0;
 
         for (LedgerItem item : items) {
-            if (item.getType() == TxType.INCOME) income += item.getAmount();
-            else expense += item.getAmount();
+            if (item.getType() == TxType.INCOME) {
+                income += item.getAmount();
+            } else {
+                expense += item.getAmount();
+            }
         }
 
         incomeSumLabel.setText(String.valueOf(income));
@@ -81,16 +85,82 @@ public class DetailDialogController {
 
     @FXML
     private void onAdd() {
-        // 다음 단계에서 구현 (입력창 다시 띄우기)
-        System.out.println("추가 클릭: " + date);
+        if (router == null || ledgerService == null) {
+            System.out.println("Router 또는 LedgerService 미주입");
+            return;
+        }
+
+        // 현재 상세창의 owner 가져오기
+        Stage owner = (Stage) dateLabel.getScene().getWindow();
+
+        boolean saved = router.openEntryDialog(owner, date);
+
+        if (saved) {
+            // 다시 데이터 불러와서 갱신
+            List<LedgerItem> items = ledgerService.findByDate(date);
+            table.setItems(FXCollections.observableArrayList(items));
+            updateSums(items);
+        }
     }
 
     @FXML
     private void onEdit() {
-        // 다음 단계에서 구현 (선택 항목 수정)
         LedgerItem selected = table.getSelectionModel().getSelectedItem();
-        System.out.println("수정 클릭: " + selected);
+        if (selected == null) {
+            System.out.println("수정할 항목을 선택해 주세요.");
+            return;
+        }
+
+        Stage owner = (Stage) dateLabel.getScene().getWindow();
+
+        boolean saved = router.openEditDialog(owner, selected);
+
+        if (saved) {
+            List<LedgerItem> items = ledgerService.findByDate(date);
+            table.setItems(FXCollections.observableArrayList(items));
+            updateSums(items);
+        }
     }
+
+    @FXML
+    private void onDelete() {
+        LedgerItem selected = table.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            System.out.println("삭제할 항목을 선택해 주세요");
+            return;
+        }
+
+        if (ledgerService == null) {
+            System.out.println("LedgerService가 주입되지 않았습니다.");
+            return;
+        }
+
+        // 1) 삭제 확인창
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setHeaderText(null);
+        confirm.setContentText("선택한 항목을 삭제할까요?");
+
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) {
+            return; // 취소
+        }
+
+        // 2) 삭제
+        boolean ok = ledgerService.deleteById(selected.getId());
+        if (!ok) {
+            System.out.println("삭제 실패: 해당 id를 찾지 못했습니다.");
+            return;
+        }
+
+        // 3) 화면 갱신 (현재 날짜 다시 로드)
+        List<LedgerItem> items = ledgerService.findByDate(date);
+        table.setItems(FXCollections.observableArrayList(items));
+        updateSums(items);
+
+        // 4) 선택 해제(옵션)
+        table.getSelectionModel().clearSelection();
+    }
+
 
     @FXML
     private void onClose() {

@@ -6,12 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class LedgerItem {
+
+    @Builder.Default
+    private UUID id = UUID.randomUUID();
+
     private LocalDate date;
     private TxType type;
     private String category;

@@ -39,6 +39,7 @@
     <HBox spacing="10">
         <Button text="추가" onAction="#onAdd"/>
         <Button text="수정" onAction="#onEdit"/>
+        <Button text="삭제" onAction="#onDelete"/>
         <Pane HBox.hgrow="ALWAYS"/>
         <Button text="닫기" onAction="#onClose"/>
     </HBox>

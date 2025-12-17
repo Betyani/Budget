@@ -20,6 +20,7 @@ public class Router {
 
     private final LedgerService ledgerService = new LedgerService();
 
+    //달력화면 열기
     public void openCalendar(Stage stage) {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -28,7 +29,7 @@ public class Router {
             Parent root = loader.load();
 
             CalendarController controller = loader.getController();
-            controller.setRouter(this); // ✅ Router 주입
+            controller.setRouter(this); //  Router 주입
 
             stage.setScene(new Scene(root, 800, 600));
             stage.setTitle("Budget 가계부");
@@ -40,7 +41,7 @@ public class Router {
         }
     }
 
-    /** ✅ 날짜 클릭 시: 데이터 있으면 상세, 없으면 입력 */
+    /* 날짜 클릭 시: 데이터 있으면 상세, 없으면 입력 */
     public void onDateClicked(Window owner, LocalDate date) {
         List<LedgerItem> items = ledgerService.findByDate(date);
 
@@ -51,7 +52,8 @@ public class Router {
         }
     }
 
-    private void openEntryDialog(Window owner, LocalDate date) {
+    //입력창 열기
+    public boolean openEntryDialog(Window owner, LocalDate date) {
         try {
             FXMLLoader loader = new FXMLLoader(
                     Objects.requireNonNull(getClass().getResource("/views/entryDialog.fxml"))
@@ -60,7 +62,7 @@ public class Router {
 
             EntryDialogController controller = loader.getController();
             controller.init(date);
-            controller.setLedgerService(ledgerService); // ✅ 저장 서비스 주입
+            controller.setLedgerService(ledgerService); // 저장 서비스 주입
 
             Stage dialog = new Stage();
             dialog.initOwner(owner);
@@ -70,11 +72,15 @@ public class Router {
             dialog.setScene(new Scene(root));
             dialog.showAndWait();
 
+            return true;
+
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
+    //상세창 열기
     private void openDetailDialog(Window owner, LocalDate date, List<LedgerItem> items) {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -84,6 +90,10 @@ public class Router {
 
             DetailDialogController controller = loader.getController();
             controller.init(date, items);
+
+            // 추가해야 하는 부분 (상세창에서 '추가/수정' 누를 때 필요)
+            controller.setRouter(this);
+            controller.setLedgerService(ledgerService);
 
             Stage dialog = new Stage();
             dialog.initOwner(owner);
@@ -97,4 +107,34 @@ public class Router {
             e.printStackTrace();
         }
     }
+
+    //수정창
+    public boolean openEditDialog(Window owner, LedgerItem item) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    Objects.requireNonNull(getClass().getResource("/views/entryDialog.fxml"))
+            );
+            Parent root = loader.load();
+
+            EntryDialogController controller = loader.getController();
+            controller.setLedgerService(ledgerService);  // 저장 서비스 주입
+            controller.initForEdit(item);                // 수정모드로 초기화
+
+            Stage dialog = new Stage();
+            dialog.initOwner(owner);
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.setTitle("수정");
+            dialog.setResizable(false);
+            dialog.setScene(new Scene(root));
+            dialog.showAndWait();
+
+            return controller.isSaved();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
