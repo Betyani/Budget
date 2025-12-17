@@ -2,6 +2,7 @@ package com.router;
 
 import com.controller.CalendarController;
 import com.controller.EntryDialogController;
+import com.service.ledger.LedgerService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Router {
+
+    private final LedgerService ledgerService = new LedgerService();
 
     public void openCalendar(Stage stage) {
         try {
@@ -27,6 +30,7 @@ public class Router {
             // 3️⃣ 컨트롤러 꺼내서 Router 주입
             CalendarController controller = loader.getController();
             controller.setRouter(this);
+
 
             // 4️⃣ Scene / Stage 설정
             stage.setScene(new Scene(root, 800, 600));
@@ -49,6 +53,7 @@ public class Router {
 
             EntryDialogController controller = loader.getController();
             controller.init(date);
+            controller.setLedgerService(ledgerService);
 
             Stage dialog = new Stage();
             dialog.initOwner(owner);
