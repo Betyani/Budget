@@ -117,14 +117,8 @@ public class CalendarController {
         clickedCell.getStyleClass().add("selected-cell");
         selectedCell = clickedCell;
 
-        System.out.println("클릭한 날짜: " + date);
-
-        // ✅ Router로 위임 (owner는 현재 달력 화면의 window)
-        if (router != null) {
-            router.openEntryDialog(calendarGrid.getScene().getWindow(), date);
-        } else {
-            System.out.println("Router가 주입되지 않았습니다. (router is null)");
-        }
+        // ✅ 날짜 클릭 처리(분기)는 Router가 담당
+        router.onDateClicked(calendarGrid.getScene().getWindow(), date);
     }
 
     /* ===================== 유틸 ===================== */

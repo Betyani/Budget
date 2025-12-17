@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.controller.DetailDialogController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <!-- 상단: 날짜 -->
+    <HBox spacing="10">
+        <Label text="날짜:"/>
+        <Label fx:id="dateLabel" text=""/>
+    </HBox>
+
+    <!-- 리스트 -->
+    <TableView fx:id="table" prefHeight="260">
+        <columns>
+            <TableColumn fx:id="typeCol" text="구분" prefWidth="90"/>
+            <TableColumn fx:id="categoryCol" text="항목" prefWidth="140"/>
+            <TableColumn fx:id="amountCol" text="금액" prefWidth="120"/>
+            <TableColumn fx:id="memoCol" text="메모" prefWidth="220"/>
+        </columns>
+    </TableView>
+
+    <!-- 합계 -->
+    <HBox spacing="16">
+        <Label text="수입 합계:"/>
+        <Label fx:id="incomeSumLabel" text="0"/>
+        <Label text="지출 합계:"/>
+        <Label fx:id="expenseSumLabel" text="0"/>
+    </HBox>
+
+    <!-- 버튼 -->
+    <HBox spacing="10">
+        <Button text="추가" onAction="#onAdd"/>
+        <Button text="수정" onAction="#onEdit"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="닫기" onAction="#onClose"/>
+    </HBox>
+
+</VBox>

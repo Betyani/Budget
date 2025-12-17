@@ -5,5 +5,12 @@
     "category": "교통",
     "amount": 12341245,
     "memo": "safdsaf"
+  },
+  {
+    "date": "2025-12-03",
+    "type": "EXPENSE",
+    "category": "교통",
+    "amount": 123,
+    "memo": "133132"
   }
 ]
