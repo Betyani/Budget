@@ -29,7 +29,6 @@ public class DetailDialogController {
 
     private LocalDate date;
 
-    // 나중에 "추가/수정" 버튼에서 사용할 예정
     @Setter
     private com.router.Router router;
 
@@ -38,9 +37,11 @@ public class DetailDialogController {
 
     private final NumberFormat yenFormat = NumberFormat.getCurrencyInstance(Locale.JAPAN);
 
+    // ✅ 상세창에서 변경이 있었는지(추가/수정/삭제)
+    private boolean changed = false;
+
     @FXML
     private void initialize() {
-        // TableColumn이 어떤 값을 표시할지 연결
         typeCol.setCellValueFactory(cell -> {
             TxType type = cell.getValue().getType();
             String text = (type == TxType.INCOME) ? "수입" : "지출";
@@ -59,7 +60,6 @@ public class DetailDialogController {
             @Override
             protected void updateItem(Number value, boolean empty) {
                 super.updateItem(value, empty);
-
                 if (empty || value == null) {
                     setText(null);
                 } else {
@@ -73,7 +73,6 @@ public class DetailDialogController {
         );
     }
 
-    // Router가 날짜와 리스트를 넘겨주면 화면에 표시
     public void init(LocalDate date, List<LedgerItem> items) {
         this.date = date;
         dateLabel.setText(date.toString());
@@ -87,11 +86,8 @@ public class DetailDialogController {
         int expense = 0;
 
         for (LedgerItem item : items) {
-            if (item.getType() == TxType.INCOME) {
-                income += item.getAmount();
-            } else {
-                expense += item.getAmount();
-            }
+            if (item.getType() == TxType.INCOME) income += item.getAmount();
+            else expense += item.getAmount();
         }
 
         incomeSumLabel.setText(yenFormat.format(income));
@@ -107,13 +103,11 @@ public class DetailDialogController {
             return;
         }
 
-        // 현재 상세창의 owner 가져오기
         Stage owner = (Stage) dateLabel.getScene().getWindow();
-
         boolean saved = router.openEntryDialog(owner, date);
 
         if (saved) {
-            // 다시 데이터 불러와서 갱신
+            changed = true; // ✅ 달력 갱신 필요
             List<LedgerItem> items = ledgerService.findByDate(date);
             table.setItems(FXCollections.observableArrayList(items));
             updateSums(items);
@@ -127,12 +121,16 @@ public class DetailDialogController {
             System.out.println("수정할 항목을 선택해 주세요.");
             return;
         }
+        if (router == null || ledgerService == null) {
+            System.out.println("Router 또는 LedgerService 미주입");
+            return;
+        }
 
         Stage owner = (Stage) dateLabel.getScene().getWindow();
-
         boolean saved = router.openEditDialog(owner, selected);
 
         if (saved) {
+            changed = true; // ✅ 달력 갱신 필요
             List<LedgerItem> items = ledgerService.findByDate(date);
             table.setItems(FXCollections.observableArrayList(items));
             updateSums(items);
@@ -146,41 +144,39 @@ public class DetailDialogController {
             System.out.println("삭제할 항목을 선택해 주세요");
             return;
         }
-
         if (ledgerService == null) {
             System.out.println("LedgerService가 주입되지 않았습니다.");
             return;
         }
 
-        // 1) 삭제 확인창
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setHeaderText(null);
         confirm.setContentText("선택한 항목을 삭제할까요?");
 
         Optional<ButtonType> result = confirm.showAndWait();
-        if (result.isEmpty() || result.get() != ButtonType.OK) {
-            return; // 취소
-        }
+        if (result.isEmpty() || result.get() != ButtonType.OK) return;
 
-        // 2) 삭제
         boolean ok = ledgerService.deleteById(selected.getId());
         if (!ok) {
             System.out.println("삭제 실패: 해당 id를 찾지 못했습니다.");
             return;
         }
 
-        // 3) 화면 갱신 (현재 날짜 다시 로드)
+        changed = true; // ✅ 달력 갱신 필요
+
         List<LedgerItem> items = ledgerService.findByDate(date);
         table.setItems(FXCollections.observableArrayList(items));
         updateSums(items);
-
-        // 4) 선택 해제(옵션)
         table.getSelectionModel().clearSelection();
     }
 
-
     @FXML
-    private void onClose() {
+    public void onClose() {
+        // ✅ 닫힐 때 Router에 “변경 여부” 통지 → Router가 달력 refresh
+        if (router != null) {
+            router.onDetailClosed(changed);
+        }
+
         Stage stage = (Stage) dateLabel.getScene().getWindow();
         stage.close();
     }

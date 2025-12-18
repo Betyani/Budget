@@ -1,29 +1,5 @@
 [
   {
-    "id": "833da7d7-4594-473d-b1e2-4980b138ad8f",
-    "date": "2025-12-01",
-    "type": "EXPENSE",
-    "category": "쇼핑",
-    "amount": 5553,
-    "memo": "13433"
-  },
-  {
-    "id": "484eb25e-2bb3-4e3e-a609-725f0a106a57",
-    "date": "2025-12-01",
-    "type": "INCOME",
-    "category": "월급",
-    "amount": 24322123,
-    "memo": "2423sa"
-  },
-  {
-    "id": "39cdf9af-fabe-4dfd-a384-6c26e9afc7fc",
-    "date": "2025-12-01",
-    "type": "EXPENSE",
-    "category": "식비",
-    "amount": 1,
-    "memo": "1"
-  },
-  {
     "id": "0be55df1-8776-47bb-9adc-a105474747eb",
     "date": "2025-12-01",
     "type": "EXPENSE",
@@ -32,43 +8,19 @@
     "memo": "11"
   },
   {
-    "id": "eacd7701-e5e6-4b6b-801c-42633d3f9dcf",
+    "id": "4fb16f97-3e29-4dab-acfb-bce78df8c6e5",
     "date": "2025-12-01",
+    "type": "EXPENSE",
+    "category": "쇼핑",
+    "amount": 12313,
+    "memo": "21321321"
+  },
+  {
+    "id": "ee9b032f-779c-4421-a9be-82e3711606b3",
+    "date": "2025-12-02",
     "type": "INCOME",
-    "category": "부수입",
-    "amount": 111,
-    "memo": "111"
-  },
-  {
-    "id": "eb90503c-7192-402a-9b22-372cd69af0ab",
-    "date": "2025-12-01",
-    "type": "EXPENSE",
-    "category": "쇼핑",
-    "amount": 1111,
-    "memo": "1111"
-  },
-  {
-    "id": "84baf7f8-53c8-42db-9d27-e7ac7b10a2d1",
-    "date": "2025-12-01",
-    "type": "EXPENSE",
-    "category": "식비",
-    "amount": 111,
-    "memo": "1111"
-  },
-  {
-    "id": "12bc09ef-6879-4db8-98db-ff0b08523b93",
-    "date": "2025-12-01",
-    "type": "EXPENSE",
-    "category": "쇼핑",
-    "amount": 1111,
-    "memo": "11111"
-  },
-  {
-    "id": "9ef6daf0-ec6f-4d97-8e22-bc873e3dd273",
-    "date": "2025-12-01",
-    "type": "EXPENSE",
-    "category": "쇼핑",
-    "amount": 1111,
-    "memo": "11111"
+    "category": "월급",
+    "amount": 123,
+    "memo": "1232132"
   }
 ]
