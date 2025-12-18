@@ -6,6 +6,7 @@ import com.service.ledger.LedgerService;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -28,8 +29,8 @@ public class EntryDialogController {
     private java.util.UUID editingId = null;
 
     // ✅ Router가 결과 확인할 수 있게
+    @Getter
     private boolean saved = false;
-    public boolean isSaved() { return saved; }
 
 
     /* ===== 주입받을 서비스 ===== */

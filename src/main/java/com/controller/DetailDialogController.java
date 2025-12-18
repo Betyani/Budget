@@ -8,8 +8,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import lombok.Setter;
 
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public class DetailDialogController {
@@ -34,6 +36,8 @@ public class DetailDialogController {
     @Setter
     private com.service.ledger.LedgerService ledgerService;
 
+    private final NumberFormat yenFormat = NumberFormat.getCurrencyInstance(Locale.JAPAN);
+
     @FXML
     private void initialize() {
         // TableColumn이 어떤 값을 표시할지 연결
@@ -50,6 +54,19 @@ public class DetailDialogController {
         amountCol.setCellValueFactory(cell ->
                 new javafx.beans.property.SimpleIntegerProperty(cell.getValue().getAmount())
         );
+
+        amountCol.setCellFactory(col -> new TableCell<LedgerItem, Number>() {
+            @Override
+            protected void updateItem(Number value, boolean empty) {
+                super.updateItem(value, empty);
+
+                if (empty || value == null) {
+                    setText(null);
+                } else {
+                    setText(yenFormat.format(value.intValue()));
+                }
+            }
+        });
 
         memoCol.setCellValueFactory(cell ->
                 new javafx.beans.property.SimpleStringProperty(cell.getValue().getMemo())
@@ -77,8 +94,8 @@ public class DetailDialogController {
             }
         }
 
-        incomeSumLabel.setText(String.valueOf(income));
-        expenseSumLabel.setText(String.valueOf(expense));
+        incomeSumLabel.setText(yenFormat.format(income));
+        expenseSumLabel.setText(yenFormat.format(expense));
     }
 
     /* ===== 버튼 이벤트 ===== */

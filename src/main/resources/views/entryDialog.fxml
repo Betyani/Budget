@@ -41,7 +41,7 @@
                   promptText="카테고리 선택"
                   GridPane.rowIndex="1"
                   GridPane.columnIndex="1"
-                  maxWidth="2"/>
+                  maxWidth="150"/>
 
         <!-- 금액 -->
         <Label text="금액" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
