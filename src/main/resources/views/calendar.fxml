@@ -7,23 +7,35 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.controller.CalendarController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="400.0" prefWidth="600.0"
+            stylesheets="@/css/calendar.css"
+            styleClass="calendar-root"
+>
 
     <!-- 상단: 이전/다음달 버튼 + 현재 월 표시 -->
     <top>
-        <HBox spacing="10" alignment="center">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
-            <Button fx:id="prevMonthButton" text="◀"/>
-            <Label fx:id="monthLabel" text="0000년 00월"/>
-            <Button fx:id="nextMonthButton" text="▶"/>
-        </HBox>
+        <VBox>
+            <HBox spacing="10" alignment="center" styleClass="calendar-topbar">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+                <Button fx:id="prevMonthButton" text="◀" styleClass="nav-button"/>
+                <Label fx:id="monthLabel" text="0000년 00월" styleClass="month-title"/>
+                <Button fx:id="nextMonthButton" text="▶" styleClass="nav-button"/>
+            </HBox>
+            <HBox spacing="10" alignment="center" styleClass="calendar-summary">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+                <Label fx:id="monthIncome" text="월수입" styleClass="summary-pill income"/>
+                <Label fx:id="monthExpense" text="월지출" styleClass="summary-pill expense"/>
+            </HBox>
+        </VBox>
     </top>
 
     <!-- 가운데: 달력 그리드 -->
     <center>
-        <GridPane fx:id="calendarGrid" alignment="CENTER">
+        <GridPane fx:id="calendarGrid" alignment="CENTER" styleClass="calendar-grid">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>

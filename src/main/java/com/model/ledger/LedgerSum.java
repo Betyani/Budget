@@ -3,7 +3,7 @@ package com.model.ledger;
 import lombok.Getter;
 
 @Getter
-public class DailySum {
+public class LedgerSum {
     private int income;
     private int expense;
 

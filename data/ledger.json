@@ -22,5 +22,21 @@
     "category": "월급",
     "amount": 123,
     "memo": "1232132"
+  },
+  {
+    "id": "c6cc6713-ce0c-412c-a1eb-fcaf59d1b2db",
+    "date": "2025-12-03",
+    "type": "EXPENSE",
+    "category": "교통",
+    "amount": 123,
+    "memo": "2333"
+  },
+  {
+    "id": "2039dc86-ea9c-4512-af9d-ec3528127b75",
+    "date": "2025-12-04",
+    "type": "INCOME",
+    "category": "월급",
+    "amount": 32434,
+    "memo": "234234"
   }
 ]
