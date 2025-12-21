@@ -2,37 +2,51 @@ plugins {
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 group = 'budget'
-version = '1.0-SNAPSHOT'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
-dependencies {
-    // JSON 저장/불러오기용 Gson
-    implementation 'com.google.code.gson:gson:2.10.1'
-
-    // Lombok (컴파일 타임 전용)
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
-
-}
-
-// 우리가 만든 Main 클래스 경로에 맞게 바꿔줘야 함!
 application {
     mainClass = 'com.main.MainApp'
 }
 
-// JavaFX 설정
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+}
+
 javafx {
     version = '17.0.11'
     modules = ['javafx.controls', 'javafx.fxml']
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'   // ✅ 인코딩 문제 해결
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.main.MainApp'
+    }
+}
+
+shadowJar {
+    archiveClassifier.set('all')
+    manifest {
+        attributes 'Main-Class': 'com.main.MainApp'
+    }
 }

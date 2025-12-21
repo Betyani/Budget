@@ -105,6 +105,14 @@ public class DetailDialogController {
 
     /* ===== 버튼 이벤트 ===== */
 
+    private void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+
     @FXML
     private void onAdd() {
         if (router == null || ledgerService == null) {
@@ -127,9 +135,10 @@ public class DetailDialogController {
     private void onEdit() {
         LedgerItem selected = table.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            System.out.println("수정할 항목을 선택해 주세요.");
+            showAlert(Alert.AlertType.WARNING, "項目を選択してください。");
             return;
         }
+
         if (router == null || ledgerService == null) {
             System.out.println("Router 또는 LedgerService 미주입");
             return;
@@ -150,9 +159,10 @@ public class DetailDialogController {
     private void onDelete() {
         LedgerItem selected = table.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            System.out.println("삭제할 항목을 선택해 주세요");
+            showAlert(Alert.AlertType.WARNING, "項目を選択してください。");
             return;
         }
+
         if (ledgerService == null) {
             System.out.println("LedgerService가 주입되지 않았습니다.");
             return;
@@ -160,7 +170,7 @@ public class DetailDialogController {
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setHeaderText(null);
-        confirm.setContentText("선택한 항목을 삭제할까요?");
+        confirm.setContentText("選択した項目を削除しますか？");
 
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isEmpty() || result.get() != ButtonType.OK) return;
