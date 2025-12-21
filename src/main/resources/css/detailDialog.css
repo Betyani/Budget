@@ -1,0 +1,179 @@
+/* ========= 루트 ========= */
+.dialog-root {
+    -fx-background-color: white;
+    -fx-padding: 18;
+    -fx-spacing: 12;
+    -fx-background-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 20, 0.25, 0, 8);
+    -fx-font-family:
+            "Meiryo UI",
+            "Meiryo",
+            "Yu Gothic UI",
+            "Yu Gothic",
+            "Hiragino Kaku Gothic ProN",
+            "MS Gothic",
+            sans-serif;
+}
+
+/* ========= 헤더 ========= */
+.header {
+    -fx-alignment: center-left;
+    -fx-padding: 0 0 6 0;
+}
+
+.muted {
+    -fx-text-fill: #6B7280;
+    -fx-font-weight: 800;
+}
+
+.date-badge {
+    -fx-background-color: #F3F4F6;
+    -fx-background-radius: 999;
+    -fx-padding: 4 10 4 10;
+    -fx-text-fill: #111827;
+    -fx-font-weight: 900;
+}
+
+/* ========= 테이블(카드) ========= */
+.tx-table {
+    -fx-background-color: white;
+    -fx-background-radius: 14;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 14;
+}
+
+/* TableView 내부 영역 배경(모서리 깔끔하게) */
+.tx-table .virtual-flow {
+    -fx-background-color: transparent;
+}
+.tx-table .corner {
+    -fx-background-color: transparent;
+}
+
+/* ========= 헤더(컬럼) ========= */
+.tx-table .column-header-background {
+    -fx-background-color: #F8FAFC;
+    -fx-background-radius: 14 14 0 0;
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 1 0;
+}
+
+.tx-table .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 8 10 8 10;
+}
+
+.tx-table .column-header .label {
+    -fx-text-fill: #374151;
+    -fx-font-weight: 900;
+}
+
+/* 헤더에서 세로 구분선이 필요하면 아주 약하게만 */
+.tx-table .column-header {
+    -fx-border-color: transparent;
+}
+
+/* ========= 행 높이(글씨 잘림 방지) ========= */
+.tx-table .table-row-cell {
+    -fx-cell-size: 36px;
+    -fx-background-color: white;
+}
+
+/* ========= 셀(뒤틀림 방지용: border 최소화) ========= */
+.tx-table .table-cell {
+    -fx-padding: 6 10 6 10;
+    -fx-text-fill: #111827;
+    -fx-font-weight: 700;
+
+    /* ✅ 여기서 border를 강하게 주면 선택/hover에서 울렁거림 생김 */
+    -fx-border-color: transparent;
+}
+
+/* ========= 행 구분선(가로 라인만) ========= */
+.tx-table .table-row-cell {
+    -fx-border-color: #F1F5F9;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* ========= Hover(연하게) ========= */
+.tx-table .table-row-cell:hover {
+    -fx-background-color: #F9FAFB;
+}
+
+/* ========= Selected(검정 제거, 연한 톤) ========= */
+.tx-table .table-row-cell:selected {
+    -fx-background-color: #EFF6FF;  /* 연한 선택색 */
+}
+.tx-table .table-row-cell:selected .table-cell {
+    -fx-text-fill: #111827;
+}
+
+/* 선택된 상태에서도 hover가 튀지 않게 */
+.tx-table .table-row-cell:selected:hover {
+    -fx-background-color: #DBEAFE;
+}
+
+/* ========= 스크롤바(너무 튀지 않게) ========= */
+.tx-table .scroll-bar:vertical,
+.tx-table .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+.tx-table .scroll-bar .track {
+    -fx-background-color: transparent;
+}
+.tx-table .scroll-bar .thumb {
+    -fx-background-color: rgba(17, 24, 39, 0.18);
+    -fx-background-radius: 999;
+}
+
+/* ========= 합계 ========= */
+.summary {
+    -fx-alignment: center-left;
+    -fx-padding: 8 0 0 0;
+}
+
+.pill {
+    -fx-background-color: #F3F4F6;
+    -fx-background-radius: 999;
+    -fx-padding: 4 10 4 10;
+    -fx-font-weight: 900;
+    -fx-text-fill: #111827;
+}
+.pill.income { -fx-text-fill: #065F46; }
+.pill.expense { -fx-text-fill: #991B1B; }
+
+/* ========= 버튼 ========= */
+.actions {
+    -fx-alignment: center-left;
+    -fx-padding: 8 0 0 0;
+}
+
+.btn {
+    -fx-background-radius: 12;
+    -fx-padding: 8 14 8 14;
+    -fx-font-weight: 900;
+    -fx-cursor: hand;
+}
+
+.btn.ghost {
+    -fx-background-color: transparent;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 12;
+    -fx-text-fill: #111827;
+}
+.btn.ghost:hover { -fx-background-color: #F9FAFB; }
+
+.btn.primary {
+    -fx-background-color: #111827;
+    -fx-text-fill: white;
+}
+.btn.primary:hover { -fx-background-color: #0B1220; }
+.btn.primary:pressed { -fx-background-color: #000000; }
+
+.btn.danger {
+    -fx-background-color: #FEF2F2;
+    -fx-text-fill: #991B1B;
+    -fx-border-color: #FECACA;
+    -fx-border-radius: 12;
+}
+.btn.danger:hover { -fx-background-color: #FEE2E2; }

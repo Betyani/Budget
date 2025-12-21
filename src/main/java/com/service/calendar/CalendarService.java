@@ -39,7 +39,7 @@ public class CalendarService {
     public List<DayOfWeekCell> generateDayOfWeek(){
         List<DayOfWeekCell> list = new ArrayList<>();
 
-        String[] days = {"일", "월", "화", "수", "목", "금", "토"};
+        String[] days = {"日", "月", "火", "水", "木", "金", "土"};
         for (int i = 0; i < 7; i++) {
             list.add(new DayOfWeekCell(days[i], i, HEADER_ROW));
         }

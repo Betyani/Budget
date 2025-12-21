@@ -44,7 +44,7 @@ public class DetailDialogController {
     private void initialize() {
         typeCol.setCellValueFactory(cell -> {
             TxType type = cell.getValue().getType();
-            String text = (type == TxType.INCOME) ? "수입" : "지출";
+            String text = (type == TxType.INCOME) ? "収入" : "支出";
             return new javafx.beans.property.SimpleStringProperty(text);
         });
 
@@ -71,6 +71,15 @@ public class DetailDialogController {
         memoCol.setCellValueFactory(cell ->
                 new javafx.beans.property.SimpleStringProperty(cell.getValue().getMemo())
         );
+
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        typeCol.prefWidthProperty().bind(table.widthProperty().multiply(0.18));
+        categoryCol.prefWidthProperty().bind(table.widthProperty().multiply(0.28));
+        amountCol.prefWidthProperty().bind(table.widthProperty().multiply(0.22));
+        memoCol.prefWidthProperty().bind(table.widthProperty().multiply(0.32));
+
+
     }
 
     public void init(LocalDate date, List<LedgerItem> items) {

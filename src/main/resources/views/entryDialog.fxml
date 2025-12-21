@@ -7,65 +7,85 @@
 <?import javafx.scene.layout.*?>
 
 <VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.controller.EntryDialogController"
-            prefHeight="400.0" prefWidth="600.0">
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.controller.EntryDialogController"
+      prefHeight="400.0" prefWidth="600.0"
+      stylesheets="@/css/entryDialog.css"
+      styleClass="dialog-root">
 
     <!-- 헤더 -->
-    <VBox spacing="6">
-        <Label text="수입/지출 입력"/>
-        <HBox spacing="8">
-            <Label text="날짜:"/>
-            <Label fx:id="dateLabel" text="-"/>
+    <VBox spacing="6" styleClass="dialog-header">
+        <Label text="収入／支出入力" styleClass="dialog-title"/>
+        <HBox spacing="8" styleClass="dialog-sub">
+            <Label text="日付:" styleClass="muted"/>
+            <Label fx:id="dateLabel" text="-" styleClass="date-badge"/>
         </HBox>
         <Separator/>
     </VBox>
 
     <!-- 입력 폼 -->
-    <GridPane hgap="10" vgap="10">
+    <GridPane hgap="10" vgap="10" styleClass="dialog-form">
         <columnConstraints>
             <ColumnConstraints minWidth="70" prefWidth="80"/>
             <ColumnConstraints hgrow="ALWAYS"/>
         </columnConstraints>
 
         <!-- 구분 -->
-        <Label text="구분" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <HBox spacing="12" GridPane.rowIndex="0" GridPane.columnIndex="1">
-            <RadioButton fx:id="incomeRadio" text="수입"/>
-            <RadioButton fx:id="expenseRadio" text="지출"/>
+        <Label text="区分" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+        <HBox spacing="12" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="segmented">
+            <RadioButton fx:id="incomeRadio" text="収入"/>
+            <RadioButton fx:id="expenseRadio" text="支出"/>
         </HBox>
 
         <!-- 항목 -->
-        <Label text="항목" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Label text="項目" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
         <ComboBox fx:id="categoryCombo"
-                  promptText="카테고리 선택"
+                  promptText="カテゴリー選択"
                   GridPane.rowIndex="1"
                   GridPane.columnIndex="1"
-                  maxWidth="150"/>
+                  maxWidth="220"
+                  styleClass="category-combo"/>
 
         <!-- 금액 -->
-        <Label text="금액" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Label text="金額" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
         <TextField fx:id="amountField"
-                   promptText="숫자만 입력 (예: 15000)"
+                   promptText="数字のみ (最大8桁)"
                    GridPane.rowIndex="2"
-                   GridPane.columnIndex="1"/>
+                   GridPane.columnIndex="1"
+                   styleClass="input"/>
 
         <!-- 메모 -->
-        <Label text="메모" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <Label text="メモ" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
         <TextArea fx:id="memoArea"
-                  promptText="메모 (선택)"
+                  promptText="メモ (任意)"
                   prefRowCount="4"
                   wrapText="true"
                   GridPane.rowIndex="3"
-                  GridPane.columnIndex="1"/>
+                  GridPane.columnIndex="1">
+            <styleClass>
+                <String fx:value="input"/>
+                <String fx:value="textarea"/>
+            </styleClass>
+        </TextArea>
     </GridPane>
 
     <!-- 버튼 -->
-    <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button text="취소" onAction="#onCancel"/>
-        <Button text="저장" defaultButton="true" onAction="#onSave"/>
+    <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="dialog-actions">
+        <Button text="キャンセル" onAction="#onCancel">
+            <styleClass>
+                <String fx:value="btn"/>
+                <String fx:value="ghost"/>
+            </styleClass>
+        </Button>
+
+        <Button text="保存" defaultButton="true" onAction="#onSave">
+            <styleClass>
+                <String fx:value="btn"/>
+                <String fx:value="primary"/>
+            </styleClass>
+        </Button>
     </HBox>
 
 
-
 </VBox>
+

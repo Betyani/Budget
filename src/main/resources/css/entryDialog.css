@@ -1,0 +1,186 @@
+/* ========= 루트(모달 카드) ========= */
+.dialog-root {
+    -fx-background-color: white;
+    -fx-padding: 18;
+    -fx-spacing: 14;
+    -fx-background-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 20, 0.25, 0, 8);
+    -fx-font-family:
+            "Meiryo UI",
+            "Meiryo",
+            "Yu Gothic UI",
+            "Yu Gothic",
+            "Hiragino Kaku Gothic ProN",
+            "MS Gothic",
+            sans-serif;
+}
+
+/* ========= 헤더 ========= */
+.dialog-header {
+    -fx-padding: 0 0 6 0;
+}
+
+.dialog-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: 800;
+    -fx-text-fill: #111827;
+}
+
+.dialog-sub {
+    -fx-alignment: center-left;
+}
+
+.muted {
+    -fx-text-fill: #6B7280;
+    -fx-font-weight: 700;
+}
+
+.date-badge {
+    -fx-background-color: #F3F4F6;
+    -fx-background-radius: 999;
+    -fx-padding: 3 8 3 8;
+    -fx-text-fill: #111827;
+    -fx-font-weight: 800;
+}
+
+/* ========= 폼 ========= */
+.dialog-form {
+    -fx-padding: 6 0 6 0;
+}
+
+.form-label {
+    -fx-text-fill: #374151;
+    -fx-font-weight: 800;
+    -fx-alignment: center-left;
+}
+
+/* RadioButton 그룹 */
+.segmented .radio-button {
+    -fx-padding: 6 10 6 10;
+    -fx-background-color: #F9FAFB;
+    -fx-background-radius: 10;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 10;
+    -fx-font-weight: 800;
+    -fx-cursor: hand;
+}
+
+.segmented .radio-button:selected {
+    -fx-background-color: #111827;
+    -fx-text-fill: white;
+    -fx-border-color: #111827;
+}
+
+/* (라디오 기본 동그라미 숨겨서 깔끔하게) */
+.segmented .radio-button .radio {
+    -fx-padding: 0;
+    -fx-opacity: 0;
+    -fx-min-width: 0;
+    -fx-pref-width: 0;
+    -fx-max-width: 0;
+}
+
+/* ========= 입력 컴포넌트 공통 ========= */
+.input {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 12;
+    -fx-padding: 8 10 8 10;
+    -fx-font-weight: 700;
+    -fx-text-fill: #111827;
+}
+
+.input:focused {
+    -fx-border-color: #111827;
+    -fx-background-insets: 0;
+}
+
+/* ===== カテゴリー ComboBox 専用 ===== */
+.category-combo {
+    -fx-background-color: white;
+    -fx-border-color: #d0d7de;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 4 10 4 10;
+}
+
+/* 선택된 값 텍스트 */
+.category-combo .list-cell {
+    -fx-text-fill: #111111;
+    -fx-font-size: 13px;
+}
+
+/* promptText (未選択時) */
+.category-combo {
+    -fx-prompt-text-fill: #9aa0a6;
+}
+
+/* 드롭다운 화살표 영역 */
+.category-combo .arrow-button {
+    -fx-background-color: transparent;
+}
+
+
+/* ComboBox 내부 */
+.combo-box.input {
+    -fx-min-height: 36;
+}
+.combo-box.input .list-cell {
+    -fx-padding: 6 10 6 10;
+}
+
+/* TextArea는 내부 스크롤 영역까지 스타일이 따로라 추가 */
+.textarea {
+    -fx-padding: 0;
+}
+.textarea .content {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-padding: 8 10 8 10;
+}
+
+/* ========= 버튼 ========= */
+.dialog-actions {
+    -fx-padding: 8 0 0 0;
+}
+
+/* 핵심: .btn 말고 .button.btn 로 강도 올리기 */
+.button.btn {
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+
+    /* 핵심: 기본 스킨 inset 제거 (안하면 기본 버튼처럼 보일 수 있음) */
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+
+    -fx-padding: 8 14 8 14;
+    -fx-font-weight: 900;
+    -fx-cursor: hand;
+}
+
+/* ghost */
+.button.btn.ghost {
+    -fx-background-color: transparent;
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 1;
+    -fx-text-fill: #111827;
+}
+.button.btn.ghost:hover {
+    -fx-background-color: #F9FAFB;
+}
+
+/* primary (defaultButton 포함해서 덮어쓰기) */
+.button.btn.primary,
+.button.btn.primary:default {
+    -fx-background-color: #111827;
+    -fx-text-fill: white;
+}
+.button.btn.primary:hover,
+.button.btn.primary:default:hover {
+    -fx-background-color: #0B1220;
+}
+.button.btn.primary:pressed,
+.button.btn.primary:default:pressed {
+    -fx-background-color: #000000;
+}

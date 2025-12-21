@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
+<?import java.lang.String?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.controller.CalendarController"
@@ -20,15 +21,25 @@
                     <Insets top="10" right="10" bottom="10" left="10"/>
                 </padding>
                 <Button fx:id="prevMonthButton" text="◀" styleClass="nav-button"/>
-                <Label fx:id="monthLabel" text="0000년 00월" styleClass="month-title"/>
+                <Label fx:id="monthLabel" text="0000年 00月" styleClass="month-title"/>
                 <Button fx:id="nextMonthButton" text="▶" styleClass="nav-button"/>
             </HBox>
             <HBox spacing="10" alignment="center" styleClass="calendar-summary">
                 <padding>
                     <Insets top="10" right="10" bottom="10" left="10"/>
                 </padding>
-                <Label fx:id="monthIncome" text="월수입" styleClass="summary-pill income"/>
-                <Label fx:id="monthExpense" text="월지출" styleClass="summary-pill expense"/>
+                <Label fx:id="monthIncome" text="월수입">
+                    <styleClass>
+                        <String fx:value="summary-pill"/>
+                        <String fx:value="income"/>
+                    </styleClass>
+                </Label>
+                <Label fx:id="monthExpense" text="월지출">
+                    <styleClass>
+                        <String fx:value="summary-pill"/>
+                        <String fx:value="expense"/>
+                    </styleClass>
+                </Label>
             </HBox>
         </VBox>
     </top>

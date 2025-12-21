@@ -2,7 +2,14 @@
 .calendar-root {
     -fx-background-color: #F3F5F7; /* 바닥 */
     -fx-padding: 16;
-    -fx-font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic";
+    -fx-font-family:
+            "Meiryo UI",
+            "Meiryo",
+            "Yu Gothic UI",
+            "Yu Gothic",
+            "Hiragino Kaku Gothic ProN",
+            "MS Gothic",
+            sans-serif;
 }
 
 /* 달력 종이판 느낌 (top 포함 전체 레이아웃이 BorderPane이라 root 배경으로 처리) */
@@ -44,6 +51,7 @@
 /* ========= 월 수입/지출 pill ========= */
 .calendar-summary {
     -fx-padding: 0 12 10 12;
+    -fx-alignment: center-right;
 }
 
 .summary-pill {
@@ -56,7 +64,7 @@
     -fx-font-weight: 700;
 }
 .summary-pill.income {
-    -fx-text-fill: #065F46;
+    -fx-text-fill: blue;
 }
 .summary-pill.expense {
     -fx-text-fill: #991B1B;
@@ -129,7 +137,7 @@
 
 /* 셀 안 금액(선택) */
 .amount-income {
-    -fx-text-fill: #059669;
+    -fx-text-fill: blue;
     -fx-font-weight: 700;
     -fx-font-size: 11px;
 }

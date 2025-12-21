@@ -37,7 +37,7 @@ public class Router {
             this.calendarController = controller;
 
             stage.setScene(new Scene(root, 800, 600));
-            stage.setTitle("Budget 가계부");
+            stage.setTitle("Budget 家計簿");
             stage.setResizable(false);
             stage.show();
 
@@ -84,7 +84,7 @@ public class Router {
             Stage dialog = new Stage();
             dialog.initOwner(owner);
             dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setTitle("입력");
+            dialog.setTitle("入力");
             dialog.setResizable(false);
             dialog.setScene(new Scene(root));
             dialog.showAndWait();
@@ -115,7 +115,7 @@ public class Router {
             Stage dialog = new Stage();
             dialog.initOwner(owner);
             dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setTitle("상세");
+            dialog.setTitle("詳細");
             dialog.setResizable(false);
             dialog.setScene(new Scene(root));
 
@@ -150,7 +150,7 @@ public class Router {
             Stage dialog = new Stage();
             dialog.initOwner(owner);
             dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.setTitle("수정");
+            dialog.setTitle("修正");
             dialog.setResizable(false);
             dialog.setScene(new Scene(root));
             dialog.showAndWait();

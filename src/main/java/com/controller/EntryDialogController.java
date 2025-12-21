@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.function.UnaryOperator;
 
 public class EntryDialogController {
 
@@ -28,6 +29,10 @@ public class EntryDialogController {
     private boolean editMode = false;
     private java.util.UUID editingId = null;
 
+    private static final int AMOUNT_MAX_DIGITS = 8;          // 9자리 제한
+    private static final long AMOUNT_MAX_VALUE = 100_000_000L; // 10억 미만 같은 상한
+    private static final int MEMO_MAX_LEN = 12;
+
     // ✅ Router가 결과 확인할 수 있게
     @Getter
     private boolean saved = false;
@@ -45,7 +50,9 @@ public class EntryDialogController {
 
         expenseRadio.setSelected(true);
 
-        categoryCombo.getItems().addAll("식비", "교통", "생활", "쇼핑", "월급", "부수입", "기타");
+        categoryCombo.getItems().addAll("食費", "交通費", "生活費", "買い物", "給料", "副収入", "その他");
+        setupAmountFormatter();
+        setupMemoFormatter();
     }
 
     public void init(LocalDate date) {
@@ -88,11 +95,11 @@ public class EntryDialogController {
         String amountText = amountField.getText();
 
         if (category == null || category.isBlank()) {
-            alert("항목을 선택해 주세요.");
+            alert("項目を選択してください。");
             return;
         }
         if (amountText == null || amountText.isBlank() || !amountText.matches("\\d+")) {
-            alert("금액은 숫자만 입력해 주세요.");
+            alert("金額は数字のみで入力してください。");
             return;
         }
 
@@ -124,7 +131,7 @@ public class EntryDialogController {
 
             boolean ok = ledgerService.updateById(updated);
             if (!ok) {
-                alert("수정 대상(id)을 찾지 못했습니다.");
+                alert("修正対象（ID）が見つかりませんでした。");
                 return;
             }
         }
@@ -144,5 +151,48 @@ public class EntryDialogController {
         alert.setHeaderText(null);
         alert.setContentText(msg);
         alert.showAndWait();
+    }
+
+    private void setupAmountFormatter() {
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String newText = change.getControlNewText();
+
+            // 1) 빈 문자열은 허용 (지우기 가능해야 함)
+            if (newText.isEmpty()) return change;
+
+            // 2) 숫자만 허용
+            if (!newText.matches("\\d+")) return null;
+
+            // 3) 길이 제한
+            if (newText.length() > AMOUNT_MAX_DIGITS) return null;
+
+            // 4) 값 상한 제한 (원하면)
+            try {
+                long value = Long.parseLong(newText);
+                if (value >= AMOUNT_MAX_VALUE) return null;
+            } catch (NumberFormatException e) {
+                return null;
+            }
+
+            return change;
+        };
+
+        amountField.setTextFormatter(new TextFormatter<>(filter));
+    }
+
+    private void setupMemoFormatter() {
+        UnaryOperator<TextFormatter.Change> filter = change -> {
+            String newText = change.getControlNewText();
+
+            // 1) 길이 제한
+            if (newText.length() > MEMO_MAX_LEN) return null;
+
+            // 2) 줄바꿈 금지하고 싶으면 아래 주석 해제
+            // if (newText.contains("\n")) return null;
+
+            return change;
+        };
+
+        memoArea.setTextFormatter(new TextFormatter<>(filter));
     }
 }

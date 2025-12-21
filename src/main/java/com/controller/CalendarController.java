@@ -114,8 +114,8 @@ public class CalendarController {
         int income = monthTotal.getIncome();
         int expense = monthTotal.getExpense();
 
-        monthIncome.setText(String.format("월수입: +%,d円", income));
-        monthExpense.setText(String.format("월지출: -%,d円", expense));
+        monthIncome.setText(String.format("月収入: +%,d円", income));
+        monthExpense.setText(String.format("月支出: -%,d円", expense));
     }
 
     private StackPane createDateCell(LocalDate date, LedgerSum sum) {
@@ -212,6 +212,12 @@ public class CalendarController {
         } else {
             System.out.println("Router가 주입되지 않았습니다.");
         }
+
+        // 다이얼로그 닫히고 돌아오면 선택 표시 해제 (검은색 남는 문제 해결)
+        if (selectedCell != null) {
+            selectedCell.getStyleClass().remove("selected");
+            selectedCell = null;
+        }
     }
 
     // Router가 호출해서 달력 최신화 (추가/수정/삭제 후)
@@ -221,8 +227,9 @@ public class CalendarController {
         renderMonth();
     }
 
+
     private String formatMonth(YearMonth ym) {
-        return ym.getYear() + "년 " + ym.getMonthValue() + "월";
+        return ym.getYear() + "年 " + ym.getMonthValue() + "月";
     }
 
     private StackPane createEmptyCell() {
